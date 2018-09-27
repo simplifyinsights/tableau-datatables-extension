@@ -2,7 +2,7 @@
 
 The Tableau DataTables Extension was built for several purposes:
 
-- To aide in my understanding on this wonderful new Tableau functionality.
+- To aide in my understanding of this wonderful new Tableau functionality.
 - To leverage the widely used DataTables.net libraries in Tableau dashboards.
 - To provide an open source example for others to look at, learn from, and improve upon.
 
