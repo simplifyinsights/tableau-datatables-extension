@@ -1,0 +1,83 @@
+.header {
+    background: #212121;
+    color: #EEEEEE;
+}
+.material-icons {
+    font-size: 48px;
+}
+.tabs .tab a {
+    color: #000000;
+}
+.tabs .tab a:hover {
+    background-color: #EEEEEE;
+    color: #000000;
+}
+.tabs .tab a.active {
+    background-color: #EEEEEE;
+    color: #000000;
+}
+.tabs .tab a:focus {
+    background-color: #EEEEEE;
+}
+.tabs .tab a:focus.active {
+    background-color: #EEEEEE;
+}
+.tabs .indicator {
+    background-color: #000000;
+}
+.col {
+    margin: 0px;
+    padding: 0px;
+}
+.buttons {
+    margin-top: 7px;
+}
+.note {
+    font-size: 14px;
+    color: #888;
+}
+tr {
+    border-bottom: none;
+}
+td {
+    padding: 5px;
+    vertical-align: top;
+}
+#sort-it ol {
+    list-style: none;
+    padding: 0;
+}
+#sort-it .dragged {
+    position: absolute;
+    opacity: 0.5;
+    z-index: 2000;
+}
+#sort-it li.placeholder {
+    position: relative;
+    background: #CCC;
+}
+#sort-it li {
+    min-height: 1em;
+    position: relative;
+    cursor: move;
+    padding: 0px 5px 0px 5px;
+    background: #eee;
+    border: 1px solid #ccc;
+    margin: 10px;
+    border-radius: 5px;
+    max-width: 290px;
+}
+#sort-it li .input-field {
+    margin: 15px 5px 0px 5px;
+}
+.logo {
+    width: 110px;
+    margin-right: 20px;
+}
+.option-header {
+    color: #111111;
+}
+.option-description {
+    color: #AAAAAA;
+    padding-left: 35px;
+}

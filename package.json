@@ -1,0 +1,15 @@
+{
+  "name": "DataTables",
+  "version": "1.0.0",
+  "description": "DataTables extension for Tableau",
+  "main": "index.js",
+  "repository": "https://github.com/tableaumagic/tableau-datatables-extension",
+  "author": "Toan Hoang",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^4.1.3",
+    "jquery": "^3.3.1",
+    "jquery-sortable": "^0.9.13",
+    "materialize-css": "^1.0.0-rc.2"
+  }
+}

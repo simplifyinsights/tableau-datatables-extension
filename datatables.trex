@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest manifest-version="0.1" xmlns="http://www.tableau.com/xml/extension_manifest">
+  <dashboard-extension id="com.toanhoang.datatables" extension-version="1.0.0">
+    <default-locale>en_US</default-locale>
+    <name resource-id=""/>
+    <description>Data Tables</description>
+    <author name="Toan Hoang / www.TableauMagic.com" email="admin@tableaumagic.com" organization="Tableau Magic" website="https://www.tableaumagic.com"/>
+    <min-api-version>0.9</min-api-version>
+    <source-location>
+      <!--url>https://tableaumagic.com/datatable/index.html</url-->
+      <url>http://localhost:8080</url>
+    </source-location>
+    <icon>iVBORw0KGgoAAAANSUhEUgAAAEAAAABAAQMAAACQp+OdAAAABlBMVEUAAAAAAAClZ7nPAAAAAXRSTlMAQObYZgAAACdJREFUKJFjYKAS+EA04z8hxn9qMfg/UIEBJAcVg4hw/g8F+BhUAgCAtrS1v85ACwAAAABJRU5ErkJggg==</icon>
+    <permissions>
+      <permission>full data</permission>
+    </permissions>
+    <context-menu>
+      <configure-context-menu-item />
+    </context-menu>
+  </dashboard-extension>
+  <resources>
+    <resource id="name">
+      <text locale="en_US">DataTables</text>
+    </resource>
+  </resources>
+</manifest>

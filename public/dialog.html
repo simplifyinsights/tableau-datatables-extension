@@ -1,0 +1,297 @@
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="lib/materialize-css/dist/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/dialog.css">
+</head>
+
+<body>
+    <main>
+        <div class="row">
+            <div class="col s12 header">
+                <h5 class="valign-wrapper"><img class="logo" src="img/Tableau-Magic-Logo-White.png"> DataTables Extension</h5>
+            </div>
+
+            <div class="row">
+                <div class="tab-heading col s12">
+                    <div class="row">
+                        <div class="col s9 m9 l9">
+                            <ul class="tabs">
+                                <li class="tab col s3"><a href="#tab1">1. Data Source</a></li>
+                                <li class="tab col s3"><a href="#tab2">2. Columns</a></li>
+                                <li class="tab col s3"><a href="#tab3">3. Formatting</a></li>
+                                <li class="tab col s3"><a href="#tab4">4. Plugins</a></li>
+                                <li class="tab col s3"><a href="#tab5">About</a></li>
+                            </ul>
+                        </div>
+                        <div class="buttons col s3 m3 l3">
+                            <a id="closeButton" class="waves-effect waves-light btn red darken-4 right">Close</a>
+                            <span class="right">&nbsp;</span>
+                            <a id="saveButton" class="waves-effect waves-light btn green darken-4 right">Save</a>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab1" class="col s12">
+                    <div class="tab-pane">
+                        <div class="row">
+                            <div class="col s6">
+                                <select id="selectWorksheet">
+                                    <option value="" disabled selected>Choose Your Worksheet</option>
+                                </select>
+                                <select id="underlying">
+                                    <option value="" disabled selected>Choose Underlying or Summary</option>
+                                    <option value="1">Underlying Data</option>
+                                    <option value="2">Summary Data</option>
+                                </select>
+                                <select id="max_no_records">
+                                    <option value="" disabled selected>Choose Maximum # of Records</option>
+                                    <option value="100">100</option>
+                                    <option value="1000">1,000</option>
+                                    <option value="10000">10,000</option>
+                                    <option value="0">Unlimited</option>
+                                </select>
+                            </div>
+                            <div class="col s6">
+                                <p>
+                                    Start by choosing the worksheet that your table will be based on, whether you want the underlying or summary data, and finally the number of records you want to be returned. These are mandatory fields.
+                                </p>
+                                <p>
+                                    <i>Note: As per the current version of the Extensions API the total number of records only applies to Underlying Data.</i>
+                                </p>
+                                <p>
+                                    Once you have made these selections you will be able to see a list of possible columns in the next tab where you will be able to reorder the columns and customise your column headings.
+                                </p>
+                                <p>
+                                    <i>Note: If you update your worksheet, add or remove data items, you will have to come back her to reconfigure the extension.</i>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab2" class="tab-pane col s12">
+                    <div class="row">
+                        <div class="col s6">
+                            <div id="sort-it">
+                                <ol>
+                                
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="col s6">
+                            <p>
+                                Drag and drop the columns to reorder. Click on the middle of the column to change the column name or leave blank to keep the Tableau Data Source Name.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab3" class="tab-pane col s12">
+                    <div class="row">
+                        <div class="col s6">
+                            <label>
+                                <input type="checkbox" class="filled-in" id="compact" />
+                                <span class="option-header">
+                                    Use Compact Layout
+                                </span>
+                            </label>
+                            <p class="option-description">
+                                Check compact layout to reduce the amount of white-space to increase the information density on screen.
+                            </p>
+                        </div>
+                        <div class="col s6">
+                            <label>
+                                <input type="checkbox" class="filled-in" id="hover" />
+                                <span class="option-header">
+                                    Row highlighting on Hover
+                                </span>
+                            </label>
+                            <p class="option-description">
+                                Check Row highlighting on Hover to instructs DataTables' styling to highlight a row when the mouse is hovered over it.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s6">
+                            <label>
+                                <input type="checkbox" class="filled-in" id="nowrap" />
+                                <span class="option-header">
+                                    Wrap Text
+                                </span>
+                            </label>
+                            <p class="option-description">
+                                Check Wrap Text to instructs DataTables' styling to wrap your text in your cells.
+                            </p>
+                        </div>
+                        <div class="col s6">
+                            <label>
+                                <input type="checkbox" class="filled-in" id="order-column" />
+                                <span class="option-header">
+                                    Highlight Sort Column
+                                </span>
+                            </label>
+                            <p class="option-description">
+                                Check Highlight Sort Column to instructs DataTables' styling to highlight column when it is used for sorting.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s6">
+                            <label>
+                                <input type="checkbox" class="filled-in" id="row-border" />
+                                <span class="option-header">
+                                    Show Row Border
+                                </span>
+                            </label>
+                            <p class="option-description">
+                                Check Highlight Sort Column to instructs DataTables' styling to draw a line between rows.
+                            </p>
+                        </div>
+                        <div class="col s6">
+                            <label>
+                                <input type="checkbox" class="filled-in" id="stripe" />
+                                <span class="option-header">
+                                    Show Row Striping
+                                </span>
+                            </label>
+                            <p class="option-description">
+                                Check Show Row Striping to instructs DataTables' styling to alternate row colours.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab4" class="tab-pane col s12">
+                    <div class="row">
+                        <div class="col s6">
+                            <label>
+                                <input type="checkbox" class="filled-in" id="export-clipboard" />
+                                <span class="option-header">
+                                    Enable Copy to Clipboard
+                                </span>
+                            </label>
+                            <p class="option-description">
+                                Check Enable Copy to Clipboard to enable this feature.
+                            </p>
+                        </div>
+                        <div class="col s6">
+                            <label>
+                                <input type="checkbox" class="filled-in" id="export-excel" />
+                                <span class="option-header">
+                                    Enable Save as Excel (XLSX)
+                                </span>
+                            </label>
+                            <p class="option-description">
+                                Check Enable Copy to Clipboard to enable this feature.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s6">
+                            <label>
+                                <input type="checkbox" class="filled-in" id="export-csv" />
+                                <span class="option-header">
+                                    Enable Save as CSV
+                                </span>
+                            </label>
+                            <p class="option-description">
+                                Check Enable Save as CSV to enable this feature.
+                            </p>
+                        </div>
+                        <div class="col s6">
+                            <label>
+                                <input type="checkbox" class="filled-in" id="export-pdf" />
+                                <span class="option-header">
+                                    Enable Save as PDF
+                                </span>
+                            </label>
+                            <p class="option-description">
+                                Check Enable Save as PDF to enable this feature.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s6">
+                            <label>
+                                <input type="checkbox" class="filled-in" id="export-print" />
+                                <span class="option-header">
+                                    Enable Display a Print View
+                                </span>
+                            </label>
+                            <p class="option-description">
+                                Check Enable Display a Print View to enable this feature.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab5" class="col s12">
+                    <table>
+                        <tr>
+                            <td class="option-description">
+                                Name:
+                            </td>
+                            <td class="option-header">
+                                DataTables Extension by Toan Hoang @thoang1000
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="option-description">
+                                Website:
+                            </td>
+                            <td class="option-header">
+                                www.tableaumagic.com
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="option-description">
+                                Version:
+                            </td>
+                            <td class="option-header">
+                                v1.0.0
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="option-description">
+                                Description:
+                            </td>
+                            <td class="option-header">
+                                The DataTable Extension was developed on Tableau Desktop 2018.2 and v1.0.0 of this Extension has been open sourced for the community to use, learn from, and improve upon.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="option-description">
+                                Repository:
+                            </td>
+                            <td class="option-header">
+                                https://github.com/tableaumagic/tableau-datatables-extension
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="option-description">
+                                License:
+                            </td>
+                            <td class="option-header">
+                                MIT
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="option-description">
+                                Libraries:
+                            </td>
+                            <td class="option-header">
+                                bootstrap ^4.1.3<br/>jQuery ^3.3.1<br/>materialize-css ^1.0.0-rc.2<br/>datatable ^1.10.18<br/>jquery-sortable: ^0.9.13
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+<script type="text/javascript" src="lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="lib/materialize-css/dist/js/materialize.min.js"></script>
+<script type="text/javascript" src="lib/jquery-sortable/source/js/jquery-sortable-min.js"></script>
+<script type="text/javascript" src="js/tableau-extensions-1.0.0.min.js"></script>
+
+<script type="text/javascript" src="js/dialog.js"></script>
+
+</html>
