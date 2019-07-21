@@ -153,13 +153,15 @@
             data: tableData,
             columns: data,
             responsive: true,
-            buttons: buttons
+            buttons: buttons,
+            bAutoWidth: false
           });
         } else {
           tableReference = $('#datatable').DataTable({
             data: tableData,
             columns: data,
-            responsive: true
+            responsive: true,
+            bAutoWidth: false
           });
         }
       })
@@ -228,13 +230,15 @@
             data: tableData,
             columns: data,
             responsive: true,
-            buttons: buttons
+            buttons: buttons,
+            bAutoWidth: false
           });
         } else {
           tableReference = $('#datatable').DataTable({
             data: tableData,
             columns: data,
-            responsive: true
+            responsive: true,
+            bAutoWidth: false
           });
         }
       })
