@@ -297,6 +297,10 @@
     if (window.frameElement) {
       window.frameElement.title = sheetName;
     }
+
+
+    // set html lang attribute
+    document.documentElement.setAttribute('lang', tableau.extensions.environment.language);
   }
 
   function datatableDrawCallback(settings) {
