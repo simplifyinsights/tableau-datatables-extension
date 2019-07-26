@@ -154,14 +154,16 @@
             columns: data,
             responsive: true,
             buttons: buttons,
-            bAutoWidth: false
+            bAutoWidth: false,
+            initComplete: datatableInitCallback
           });
         } else {
           tableReference = $('#datatable').DataTable({
             data: tableData,
             columns: data,
             responsive: true,
-            bAutoWidth: false
+            bAutoWidth: false,
+            initComplete: datatableInitCallback
           });
         }
       })
@@ -231,18 +233,60 @@
             columns: data,
             responsive: true,
             buttons: buttons,
-            bAutoWidth: false
+            bAutoWidth: false,
+            initComplete: datatableInitCallback
           });
         } else {
           tableReference = $('#datatable').DataTable({
             data: tableData,
             columns: data,
             responsive: true,
-            bAutoWidth: false
+            bAutoWidth: false,
+            initComplete: datatableInitCallback
           });
         }
       })
     }
+  }
+
+  function datatableInitCallback(settings, json) {
+    // insert table caption
+    var table = settings.oInstance.api();
+    var $node = $(table.table().node());
+
+    var sheetName = tableau.extensions.settings.get('worksheet');
+
+    // add screen readers only caption for table
+    $node.prepend($('<caption id="datatable_caption" class="sr-only">'+sheetName+'</caption>'));
+
+
+
+    // update buttons aria-label to include information about table it is bound to
+    table.buttons().each(function(item){
+      var $buttonNode = $(item.node);
+
+      var ariaLabel = '';
+
+      if ($buttonNode.hasClass('buttons-copy')) {
+        ariaLabel = 'Copy to clipboard contents of '+sheetName+' table';
+      }
+      else if ($buttonNode.hasClass('buttons-csv')) {
+        ariaLabel = 'Download contents of '+sheetName+' table as CSV file';
+      }
+      else if ($buttonNode.hasClass('buttons-excel')) {
+        ariaLabel = 'Download contents of '+sheetName+' table as Excel file';
+      }
+      else if ($buttonNode.hasClass('buttons-pdf')) {
+        ariaLabel = 'Download contents of '+sheetName+' table as PDF file';
+      }
+      else if ($buttonNode.hasClass('buttons-print')) {
+        ariaLabel = 'Print contents of '+sheetName+' table';
+      }
+
+      if (ariaLabel) {
+        $buttonNode.attr('aria-label', ariaLabel);
+      }
+    });
   }
 
   // Creates an empty 2D array. we will use this to match the the data set returned
