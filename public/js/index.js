@@ -291,6 +291,12 @@
         $buttonNode.attr('aria-label', ariaLabel);
       }
     });
+
+
+    // set extension's iframe title
+    if (window.frameElement) {
+      window.frameElement.title = sheetName;
+    }
   }
 
   function datatableDrawCallback(settings) {
