@@ -155,7 +155,8 @@
             responsive: true,
             buttons: buttons,
             bAutoWidth: false,
-            initComplete: datatableInitCallback
+            initComplete: datatableInitCallback,
+            drawCallback: datatableDrawCallback
           });
         } else {
           tableReference = $('#datatable').DataTable({
@@ -163,7 +164,8 @@
             columns: data,
             responsive: true,
             bAutoWidth: false,
-            initComplete: datatableInitCallback
+            initComplete: datatableInitCallback,
+            drawCallback: datatableDrawCallback
           });
         }
       })
@@ -234,7 +236,8 @@
             responsive: true,
             buttons: buttons,
             bAutoWidth: false,
-            initComplete: datatableInitCallback
+            initComplete: datatableInitCallback,
+            drawCallback: datatableDrawCallback
           });
         } else {
           tableReference = $('#datatable').DataTable({
@@ -242,7 +245,8 @@
             columns: data,
             responsive: true,
             bAutoWidth: false,
-            initComplete: datatableInitCallback
+            initComplete: datatableInitCallback,
+            drawCallback: datatableDrawCallback
           });
         }
       })
@@ -287,6 +291,28 @@
         $buttonNode.attr('aria-label', ariaLabel);
       }
     });
+  }
+
+  function datatableDrawCallback(settings) {
+
+    // fix pagination buttons access by keyboard
+    var $paginationNode = $('#datatable_paginate');
+
+    if ($paginationNode.length) {
+      var paginateButEls = $paginationNode.find('.paginate_button');
+
+      // if pagination button is disabled or current page (means no action when activated), remove from tab order
+      paginateButEls.each(function(){
+        var $item = $(this);
+        if ($item.hasClass('disabled')) {
+          $item.attr('tabindex', '-1');
+        }
+        if ($item.hasClass('current')) {
+          $item.addClass('disabled');
+          $item.attr('tabindex', '-1');
+        }
+      });
+    }
   }
 
   // Creates an empty 2D array. we will use this to match the the data set returned
