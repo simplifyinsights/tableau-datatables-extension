@@ -291,12 +291,6 @@
         $buttonNode.attr('aria-label', ariaLabel);
       }
     });
-
-
-    // set extension's iframe title
-    if (window.frameElement) {
-      window.frameElement.title = sheetName;
-    }
   }
 
   function datatableDrawCallback(settings) {
@@ -334,7 +328,7 @@
   // This is called when you click on the Configure button.
   function configure() {
 
-    const popupUrl = `${window.location.origin}/dialog.html`;
+    const popupUrl = `./dialog.html`;
 
     let input = "";
 
