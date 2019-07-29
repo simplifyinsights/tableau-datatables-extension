@@ -261,7 +261,8 @@
     var sheetName = tableau.extensions.settings.get('worksheet');
 
     // add screen readers only caption for table
-    $node.prepend($('<caption id="datatable_caption" class="sr-only">'+sheetName+'</caption>'));
+    // make changes of caption announced by screen reader - used to update caption when sorting changed
+    $node.prepend($('<caption id="datatable_caption" class="sr-only" role="alert" aria-live="polite">'+sheetName+'</caption>'));
 
 
 
@@ -307,6 +308,11 @@
 
     var table = settings.oInstance.api();
     var $node = $(table.table().node());
+
+    var $captionEl = $node.find('#datatable_caption');
+
+    var sheetName = tableau.extensions.settings.get('worksheet');
+
 
     // fix pagination buttons access by keyboard
     var $paginationNode = $('#datatable_paginate');
@@ -354,6 +360,34 @@
           $item.html('Next <span class="sr-only"> page</span>');
         }
       });
+    }
+
+
+    // fix sorting change announce by screen reader
+    var order = table.order();
+
+    if (order && order.length)
+    {
+      // remove aria-sort from any column set previously
+      // as per spec it should be applied to only one element at a time: https://www.w3.org/WAI/PF/aria/states_and_properties#aria-sort
+      $node.find('[aria-sort]').removeAttr('aria-sort');
+
+      // get header element sorted by currently
+      var $columnHeader = $(table.column(order[0][0]).header());
+
+      // set aria-sort
+      var ariaSortedByDirection = (order[0][1] == 'asc' ? 'ascending' : (order[0][1] == 'desc' ? 'descending' : 'other'));
+      $columnHeader.attr('aria-sort', ariaSortedByDirection);
+
+      // update table caption
+      var sortedByDirectionText = ariaSortedByDirection;
+      $captionEl.text(sheetName+' sorted by '+$columnHeader.text()+': '+sortedByDirectionText+' order');
+    }
+    // default for no sort
+    else
+    {
+      $node.find('[aria-sort]').removeAttr('aria-sort');
+      $captionEl.text(sheetName);
     }
   }
 
