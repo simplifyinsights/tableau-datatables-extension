@@ -305,21 +305,53 @@
 
   function datatableDrawCallback(settings) {
 
+    var table = settings.oInstance.api();
+    var $node = $(table.table().node());
+
     // fix pagination buttons access by keyboard
     var $paginationNode = $('#datatable_paginate');
 
     if ($paginationNode.length) {
+
+      // change role of element
+      $paginationNode.attr('role', 'navigation');
+      // set which element it controls
+      $paginationNode.attr('aria-controls', $node.attr('id'));
+
       var paginateButEls = $paginationNode.find('.paginate_button');
 
       // if pagination button is disabled or current page (means no action when activated), remove from tab order
       paginateButEls.each(function(){
         var $item = $(this);
+
+        // remove aria-controls set by default for each button (previously we set it for whole navigation element)
+        $item.removeAttr('aria-controls');
+
+        // disabled link, for example: prev or next button
         if ($item.hasClass('disabled')) {
-          $item.attr('tabindex', '-1');
+          $item.attr('aria-disabled', 'true');
         }
+        // current page
         if ($item.hasClass('current')) {
           $item.addClass('disabled');
-          $item.attr('tabindex', '-1');
+          $item.attr('aria-disabled', 'true');
+        }
+
+        // prev page link text: add sr-only " page" text
+        if ($item.attr('id') == 'datatable_previous')
+        {
+          $item.html('Previous <span class="sr-only"> page</span>');
+        }
+        // link with number, for example "2" - add sr-only "page " text
+        else if ($item.text().trim().match(/^\d+$/))
+        {
+            var pageNum = $item.text().trim();
+            $item.html('<span class="sr-only">page </span> '+pageNum);
+        }
+        // next page link text: add sr-only " page" text
+        else if ($item.attr('id') == 'datatable_next')
+        {
+          $item.html('Next <span class="sr-only"> page</span>');
         }
       });
     }
