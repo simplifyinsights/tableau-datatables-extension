@@ -273,25 +273,30 @@
       var ariaLabel = '';
 
       if ($buttonNode.hasClass('buttons-copy')) {
-        ariaLabel = 'Copy to clipboard contents of '+sheetName+' table';
+        ariaLabel = 'Copy '+sheetName+' table';
       }
       else if ($buttonNode.hasClass('buttons-csv')) {
-        ariaLabel = 'Download contents of '+sheetName+' table as CSV file';
+        ariaLabel = 'CSV of '+sheetName+' table';
       }
       else if ($buttonNode.hasClass('buttons-excel')) {
-        ariaLabel = 'Download contents of '+sheetName+' table as Excel file';
+        ariaLabel = 'Excel of '+sheetName+' table';
       }
       else if ($buttonNode.hasClass('buttons-pdf')) {
-        ariaLabel = 'Download contents of '+sheetName+' table as PDF file';
+        ariaLabel = 'PDF of '+sheetName+' table';
       }
       else if ($buttonNode.hasClass('buttons-print')) {
-        ariaLabel = 'Print contents of '+sheetName+' table';
+        ariaLabel = 'Print '+sheetName+' table';
       }
 
       if (ariaLabel) {
         $buttonNode.attr('aria-label', ariaLabel);
       }
     });
+
+
+    // update search input label
+    var $searchEl = $('#datatable_filter input');
+    $searchEl.attr('aria-label', 'Search '+sheetName+' table');
 
 
     // set extension's iframe title
