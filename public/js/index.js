@@ -351,8 +351,24 @@
         // link with number, for example "2" - add sr-only "page " text
         else if ($item.text().trim().match(/^\d+$/))
         {
-            var pageNum = $item.text().trim();
-            $item.html('<span class="sr-only">page&nbsp;</span> '+pageNum);
+            // page number
+            var pageNum = Number($item.text().trim());
+            // items per page
+            var itemsPerPage = table.page.len();
+            // total number of items in table
+            var totalCount = table.data().length;
+
+            // calculate number of first item on the page
+            var firstItemNum = (pageNum-1)*itemsPerPage + 1;
+            var lastItemNum = firstItemNum + itemsPerPage - 1;
+            // correct last item num if last page is not full
+            if (lastItemNum > totalCount)
+            {
+                lastItemNum = totalCount;
+            }
+
+            // set aria-label attribute
+            $item.attr('aria-label', 'page '+pageNum+' - entries '+firstItemNum+' to '+lastItemNum+' of '+totalCount);
         }
         // next page link text: add sr-only " page" text
         else if ($item.attr('id') == 'datatable_next')
