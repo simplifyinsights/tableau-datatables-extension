@@ -373,7 +373,7 @@
             }
 
             // set aria-label attribute
-            $item.attr('aria-label', 'page '+pageNum+' - entries '+firstItemNum+' to '+lastItemNum+' of '+totalCount);
+            $item.attr('aria-label', pageNum+' - entries '+firstItemNum+' to '+lastItemNum+' of '+totalCount);
         }
         // next page link text: add sr-only " page" text
         else if ($item.attr('id') == 'datatable_next')
