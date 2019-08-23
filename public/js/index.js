@@ -356,7 +356,7 @@
         // prev page link text: add sr-only " page" text
         if ($item.attr('id') == 'datatable_previous')
         {
-          $item.html('Previous <span class="sr-only">&nbsp;page</span>');
+          $item.html('Previous <span class="sr-only">&nbsp;page of '+sheetName+' table</span>');
         }
         // link with number, for example "2" - add sr-only "page " text
         else if ($item.text().trim().match(/^\d+$/))
@@ -378,12 +378,12 @@
             }
 
             // set aria-label attribute
-            $item.attr('aria-label', pageNum+' - entries '+firstItemNum+' to '+lastItemNum+' of '+totalCount);
+            $item.attr('aria-label', pageNum+' - entries '+firstItemNum+' to '+lastItemNum+' of '+totalCount+' on '+sheetName+' table');
         }
         // next page link text: add sr-only " page" text
         else if ($item.attr('id') == 'datatable_next')
         {
-          $item.html('Next <span class="sr-only">&nbsp;page</span>');
+          $item.html('Next <span class="sr-only">&nbsp;page of '+sheetName+' table</span>');
         }
       });
     }
