@@ -112,7 +112,7 @@
     $('.tabs').tabs();
     $('#closeButton').click(closeDialog);
     $('#saveButton').click(saveButton);
-    $('#resetButton').click(resetButton);
+    // $('#resetButton').click(resetButton);
   }
 
   function columnsUpdate() {
