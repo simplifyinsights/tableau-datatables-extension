@@ -323,7 +323,16 @@
 
     var sheetName = tableau.extensions.settings.get('worksheet');
     var includeTableName = (tableau.extensions.settings.get('include-table-name') == 'Y' ? true : false);
+    var countOfColumnsForRowHeader = Number(tableau.extensions.settings.get('col-count-row-header'));
 
+    // set row headers if setting is selected
+    if (countOfColumnsForRowHeader > 0)
+    {
+      table.rows().every(function(){
+        // for each row update needed number of cells to have role of row header
+        $(this.node()).find('td').slice(0, countOfColumnsForRowHeader).attr('role', 'rowheader');
+      });
+    }
 
     // fix pagination buttons access by keyboard
     var $paginationNode = $('#datatable_paginate');

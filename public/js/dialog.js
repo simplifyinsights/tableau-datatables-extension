@@ -91,6 +91,10 @@
       for (var i = 0; i < column_names_array.length; i++) {
         //alert(column_names_array[i] + " : " + column_order_array[i]);
         $("#sort-it ol").append("<li><div class='input-field'><input id='" + column_names_array[i] + "' type='text' col_num=" + column_order_array[i] + "><label for=" + column_names_array[i] + "'>" + column_names_array[i] + "</label></div></li>");
+
+        // add option to "number of columns for row header" dropdown
+        $('#col-count-row-header').append('<option value="'+(i+1)+'" '+
+          (tableau.extensions.settings.get('col-count-row-header') == i+1 ? 'selected' : '')+'>'+(i+1)+'</option>');
       }
       $('#sort-it ol').sortable({
         onDrop: function (item) {
@@ -292,6 +296,9 @@
       }
       counter++;
     });
+
+    // row header setting
+    tableau.extensions.settings.set("col-count-row-header", $('#col-count-row-header').val());
 
     // We save the column order and column name variables in the UI Namespace.
     tableau.extensions.settings.set("column_order", column_order);
