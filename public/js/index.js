@@ -260,6 +260,11 @@
 
     var sheetName = tableau.extensions.settings.get('worksheet');
 
+
+    // add screen reader only h2
+    $('#datatable_wrapper').prepend('<h2 class="sr-only">'+sheetName+' | Data Table Extension | Tableau</h2>');
+
+
     // add screen readers only caption for table
     // make changes of caption announced by screen reader - used to update caption when sorting changed
     $node.prepend($('<caption id="datatable_caption" class="sr-only" role="alert" aria-live="polite">'+sheetName+'</caption>'));
