@@ -345,12 +345,12 @@
 
         // disabled link, for example: prev or next button
         if ($item.hasClass('disabled')) {
-          $item.attr('aria-disabled', 'true');
+          $item.attr('tabindex', -1);
         }
         // current page
         if ($item.hasClass('current')) {
           $item.addClass('disabled');
-          $item.attr('aria-disabled', 'true');
+          $item.attr('tabindex', -1);
         }
 
         // prev page link text: add sr-only " page" text
