@@ -45,6 +45,8 @@
         $("#stripe").prop("checked", false);
       }
 
+      $("#include-table-name").prop("checked", tableau.extensions.settings.get("include-table-name") == "Y" ? true : false);
+
       // We restore the plugin settings.
       if (tableau.extensions.settings.get("export-clipboard") == "Y") {
         $("#export-clipboard").prop("checked", true);
@@ -220,6 +222,12 @@
       tableau.extensions.settings.set("stripe", "Y");
     } else {
       tableau.extensions.settings.set("stripe", "N");
+    }
+    if ($("#include-table-name").is(":checked")) {
+        tableClass += " include-table-name";
+        tableau.extensions.settings.set("include-table-name", "Y");
+    } else {
+        tableau.extensions.settings.set("include-table-name", "N");
     }
 
     tableau.extensions.settings.set("table-classes", tableClass);

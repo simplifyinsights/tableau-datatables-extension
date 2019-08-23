@@ -259,7 +259,7 @@
     var $node = $(table.table().node());
 
     var sheetName = tableau.extensions.settings.get('worksheet');
-
+    var includeTableName = (tableau.extensions.settings.get('include-table-name') == 'Y' ? true : false);
 
     // add screen reader only h2
     $('#datatable_wrapper').prepend('<h2 class="sr-only">'+sheetName+' | Data Table Extension | Tableau</h2>');
@@ -278,19 +278,19 @@
       var ariaLabel = '';
 
       if ($buttonNode.hasClass('buttons-copy')) {
-        ariaLabel = 'Copy '+sheetName+' table';
+        ariaLabel = 'Copy'+(includeTableName ? ' '+sheetName : '')+' table';
       }
       else if ($buttonNode.hasClass('buttons-csv')) {
-        ariaLabel = 'CSV of '+sheetName+' table';
+        ariaLabel = 'CSV of'+(includeTableName ? ' '+sheetName : '')+' table';
       }
       else if ($buttonNode.hasClass('buttons-excel')) {
-        ariaLabel = 'Excel of '+sheetName+' table';
+        ariaLabel = 'Excel of'+(includeTableName ? ' '+sheetName : '')+' table';
       }
       else if ($buttonNode.hasClass('buttons-pdf')) {
-        ariaLabel = 'PDF of '+sheetName+' table';
+        ariaLabel = 'PDF of'+(includeTableName ? ' '+sheetName : '')+' table';
       }
       else if ($buttonNode.hasClass('buttons-print')) {
-        ariaLabel = 'Print '+sheetName+' table';
+        ariaLabel = 'Print'+(includeTableName ? ' '+sheetName : '')+' table';
       }
 
       if (ariaLabel) {
@@ -301,7 +301,7 @@
 
     // update search input label
     var $searchEl = $('#datatable_filter input');
-    $searchEl.attr('aria-label', 'Search '+sheetName+' table');
+    $searchEl.attr('aria-label', 'Search'+(includeTableName ? ' '+sheetName : '')+' table');
 
 
     // set extension's iframe title
@@ -322,6 +322,7 @@
     var $captionEl = $node.find('#datatable_caption');
 
     var sheetName = tableau.extensions.settings.get('worksheet');
+    var includeTableName = (tableau.extensions.settings.get('include-table-name') == 'Y' ? true : false);
 
 
     // fix pagination buttons access by keyboard
@@ -356,7 +357,7 @@
         // prev page link text: add sr-only " page" text
         if ($item.attr('id') == 'datatable_previous')
         {
-          $item.html('Previous <span class="sr-only">&nbsp;page of '+sheetName+' table</span>');
+          $item.html('Previous <span class="sr-only">&nbsp;page of'+(includeTableName ? ' '+sheetName+' table' : '')+'</span>');
         }
         // link with number, for example "2" - add sr-only "page " text
         else if ($item.text().trim().match(/^\d+$/))
@@ -378,12 +379,12 @@
             }
 
             // set aria-label attribute
-            $item.attr('aria-label', pageNum+' - entries '+firstItemNum+' to '+lastItemNum+' of '+totalCount+' on '+sheetName+' table');
+            $item.attr('aria-label', pageNum+' - entries '+firstItemNum+' to '+lastItemNum+' of '+totalCount+(includeTableName ? ' on '+sheetName+' table' : ''));
         }
         // next page link text: add sr-only " page" text
         else if ($item.attr('id') == 'datatable_next')
         {
-          $item.html('Next <span class="sr-only">&nbsp;page of '+sheetName+' table</span>');
+          $item.html('Next <span class="sr-only">&nbsp;page of'+(includeTableName ? ' '+sheetName+' table' : '')+'</span>');
         }
       });
     }
