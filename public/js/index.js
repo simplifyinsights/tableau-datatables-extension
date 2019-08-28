@@ -76,6 +76,15 @@
     // Retrieve values the other two values from the settings dialogue window.
     var underlying = tableau.extensions.settings.get("underlying");
     var max_no_records = tableau.extensions.settings.get("max_no_records");
+    var includeTableName = (tableau.extensions.settings.get('include-table-name') == 'Y' ? true : false);
+
+    // override default datatable lang variables
+    var datatableLangObj = {
+      oAria: {
+        sSortAscending: ': activate to sort column ascending'+(includeTableName ? ' on '+sheetName+' table' : ''),
+        sSortDescending: ': activate to sort column descending'+(includeTableName ? ' on '+sheetName+' table' : '')
+      }
+    };
 
     // Add an event listener to the worksheet.
     unregisterFilterEventListener = worksheet.addEventListener(tableau.TableauEventType.FilterChanged, (filterEvent) => {
@@ -156,7 +165,8 @@
             buttons: buttons,
             bAutoWidth: false,
             initComplete: datatableInitCallback,
-            drawCallback: datatableDrawCallback
+            drawCallback: datatableDrawCallback,
+            oLanguage: datatableLangObj
           });
         } else {
           tableReference = $('#datatable').DataTable({
@@ -165,7 +175,8 @@
             responsive: true,
             bAutoWidth: false,
             initComplete: datatableInitCallback,
-            drawCallback: datatableDrawCallback
+            drawCallback: datatableDrawCallback,
+            oLanguage: datatableLangObj
           });
         }
       })
@@ -236,8 +247,10 @@
             responsive: true,
             buttons: buttons,
             bAutoWidth: false,
+            rowGroup: true,
             initComplete: datatableInitCallback,
-            drawCallback: datatableDrawCallback
+            drawCallback: datatableDrawCallback,
+            oLanguage: datatableLangObj
           });
         } else {
           tableReference = $('#datatable').DataTable({
@@ -246,7 +259,8 @@
             responsive: true,
             bAutoWidth: false,
             initComplete: datatableInitCallback,
-            drawCallback: datatableDrawCallback
+            drawCallback: datatableDrawCallback,
+            oLanguage: datatableLangObj
           });
         }
       })
