@@ -76,6 +76,15 @@
     // Retrieve values the other two values from the settings dialogue window.
     var underlying = tableau.extensions.settings.get("underlying");
     var max_no_records = tableau.extensions.settings.get("max_no_records");
+    var includeTableName = (tableau.extensions.settings.get('include-table-name') == 'Y' ? true : false);
+
+    // override default datatable lang variables
+    var datatableLangObj = {
+      oAria: {
+        sSortAscending: ': activate to sort column ascending'+(includeTableName ? ' on '+sheetName+' table' : ''),
+        sSortDescending: ': activate to sort column descending'+(includeTableName ? ' on '+sheetName+' table' : '')
+      }
+    };
 
     // Add an event listener to the worksheet.
     unregisterFilterEventListener = worksheet.addEventListener(tableau.TableauEventType.FilterChanged, (filterEvent) => {
@@ -153,13 +162,21 @@
             data: tableData,
             columns: data,
             responsive: true,
-            buttons: buttons
+            buttons: buttons,
+            bAutoWidth: false,
+            initComplete: datatableInitCallback,
+            drawCallback: datatableDrawCallback,
+            oLanguage: datatableLangObj
           });
         } else {
           tableReference = $('#datatable').DataTable({
             data: tableData,
             columns: data,
-            responsive: true
+            responsive: true,
+            bAutoWidth: false,
+            initComplete: datatableInitCallback,
+            drawCallback: datatableDrawCallback,
+            oLanguage: datatableLangObj
           });
         }
       })
@@ -228,16 +245,199 @@
             data: tableData,
             columns: data,
             responsive: true,
-            buttons: buttons
+            buttons: buttons,
+            bAutoWidth: false,
+            rowGroup: true,
+            initComplete: datatableInitCallback,
+            drawCallback: datatableDrawCallback,
+            oLanguage: datatableLangObj
           });
         } else {
           tableReference = $('#datatable').DataTable({
             data: tableData,
             columns: data,
-            responsive: true
+            responsive: true,
+            bAutoWidth: false,
+            initComplete: datatableInitCallback,
+            drawCallback: datatableDrawCallback,
+            oLanguage: datatableLangObj
           });
         }
       })
+    }
+  }
+
+  function datatableInitCallback(settings, json) {
+    // insert table caption
+    var table = settings.oInstance.api();
+    var $node = $(table.table().node());
+
+    var sheetName = tableau.extensions.settings.get('worksheet');
+    var includeTableName = (tableau.extensions.settings.get('include-table-name') == 'Y' ? true : false);
+
+    // add screen reader only h2
+    $('#datatable_wrapper').prepend('<h2 class="sr-only">'+sheetName+' | Data Table Extension | Tableau</h2>');
+
+
+    // add screen readers only caption for table
+    // make changes of caption announced by screen reader - used to update caption when sorting changed
+    $node.prepend($('<caption id="datatable_caption" class="sr-only" role="alert" aria-live="polite">'+sheetName+'</caption>'));
+
+
+
+    // update buttons aria-label to include information about table it is bound to
+    table.buttons().each(function(item){
+      var $buttonNode = $(item.node);
+
+      var ariaLabel = '';
+
+      if ($buttonNode.hasClass('buttons-copy')) {
+        ariaLabel = 'Copy'+(includeTableName ? ' '+sheetName : '')+' table';
+      }
+      else if ($buttonNode.hasClass('buttons-csv')) {
+        ariaLabel = 'CSV of'+(includeTableName ? ' '+sheetName : '')+' table';
+      }
+      else if ($buttonNode.hasClass('buttons-excel')) {
+        ariaLabel = 'Excel of'+(includeTableName ? ' '+sheetName : '')+' table';
+      }
+      else if ($buttonNode.hasClass('buttons-pdf')) {
+        ariaLabel = 'PDF of'+(includeTableName ? ' '+sheetName : '')+' table';
+      }
+      else if ($buttonNode.hasClass('buttons-print')) {
+        ariaLabel = 'Print'+(includeTableName ? ' '+sheetName : '')+' table';
+      }
+
+      if (ariaLabel) {
+        $buttonNode.attr('aria-label', ariaLabel);
+      }
+    });
+
+
+    // update search input label
+    var $searchEl = $('#datatable_filter input');
+    $searchEl.attr('aria-label', 'Search'+(includeTableName ? ' '+sheetName : '')+' table');
+
+
+    // set extension's iframe title
+    if (window.frameElement) {
+      window.frameElement.title = sheetName;
+    }
+
+
+    // set html lang attribute
+    document.documentElement.setAttribute('lang', tableau.extensions.environment.language);
+  }
+
+  function datatableDrawCallback(settings) {
+
+    var table = settings.oInstance.api();
+    var $node = $(table.table().node());
+
+    var $captionEl = $node.find('#datatable_caption');
+
+    var sheetName = tableau.extensions.settings.get('worksheet');
+    var includeTableName = (tableau.extensions.settings.get('include-table-name') == 'Y' ? true : false);
+    var countOfColumnsForRowHeader = Number(tableau.extensions.settings.get('col-count-row-header'));
+
+    // set row headers if setting is selected
+    if (countOfColumnsForRowHeader > 0)
+    {
+      table.rows().every(function(){
+        // for each row update needed number of cells to have role of row header
+        $(this.node()).find('td').slice(0, countOfColumnsForRowHeader).attr('role', 'rowheader');
+      });
+    }
+
+    // fix pagination buttons access by keyboard
+    var $paginationNode = $('#datatable_paginate');
+
+    if ($paginationNode.length) {
+
+      // change role of element
+      $paginationNode.attr('role', 'navigation');
+      // set which element it controls
+      $paginationNode.attr('aria-controls', $node.attr('id'));
+
+      var paginateButEls = $paginationNode.find('.paginate_button');
+
+      // if pagination button is disabled or current page (means no action when activated), remove from tab order
+      paginateButEls.each(function(){
+        var $item = $(this);
+
+        // remove aria-controls set by default for each button (previously we set it for whole navigation element)
+        $item.removeAttr('aria-controls');
+
+        // disabled link, for example: prev or next button
+        if ($item.hasClass('disabled')) {
+          $item.attr('tabindex', -1);
+        }
+        // current page
+        if ($item.hasClass('current')) {
+          $item.addClass('disabled');
+          $item.attr('tabindex', -1);
+        }
+
+        // prev page link text: add sr-only " page" text
+        if ($item.attr('id') == 'datatable_previous')
+        {
+          $item.html('Previous <span class="sr-only">&nbsp;page of'+(includeTableName ? ' '+sheetName+' table' : '')+'</span>');
+        }
+        // link with number, for example "2" - add sr-only "page " text
+        else if ($item.text().trim().match(/^\d+$/))
+        {
+            // page number
+            var pageNum = Number($item.text().trim());
+            // items per page
+            var itemsPerPage = table.page.len();
+            // total number of items in table
+            var totalCount = table.data().length;
+
+            // calculate number of first item on the page
+            var firstItemNum = (pageNum-1)*itemsPerPage + 1;
+            var lastItemNum = firstItemNum + itemsPerPage - 1;
+            // correct last item num if last page is not full
+            if (lastItemNum > totalCount)
+            {
+                lastItemNum = totalCount;
+            }
+
+            // set aria-label attribute
+            $item.attr('aria-label', pageNum+' - entries '+firstItemNum+' to '+lastItemNum+' of '+totalCount+(includeTableName ? ' on '+sheetName+' table' : ''));
+        }
+        // next page link text: add sr-only " page" text
+        else if ($item.attr('id') == 'datatable_next')
+        {
+          $item.html('Next <span class="sr-only">&nbsp;page of'+(includeTableName ? ' '+sheetName+' table' : '')+'</span>');
+        }
+      });
+    }
+
+
+    // fix sorting change announce by screen reader
+    var order = table.order();
+
+    if (order && order.length)
+    {
+      // remove aria-sort from any column set previously
+      // as per spec it should be applied to only one element at a time: https://www.w3.org/WAI/PF/aria/states_and_properties#aria-sort
+      $node.find('[aria-sort]').removeAttr('aria-sort');
+
+      // get header element sorted by currently
+      var $columnHeader = $(table.column(order[0][0]).header());
+
+      // set aria-sort
+      var ariaSortedByDirection = (order[0][1] == 'asc' ? 'ascending' : (order[0][1] == 'desc' ? 'descending' : 'other'));
+      $columnHeader.attr('aria-sort', ariaSortedByDirection);
+
+      // update table caption
+      var sortedByDirectionText = ariaSortedByDirection;
+      $captionEl.text(sheetName+' sorted by '+$columnHeader.text()+': '+sortedByDirectionText+' order');
+    }
+    // default for no sort
+    else
+    {
+      $node.find('[aria-sort]').removeAttr('aria-sort');
+      $captionEl.text(sheetName);
     }
   }
 

@@ -45,6 +45,8 @@
         $("#stripe").prop("checked", false);
       }
 
+      $("#include-table-name").prop("checked", tableau.extensions.settings.get("include-table-name") == "Y" ? true : false);
+
       // We restore the plugin settings.
       if (tableau.extensions.settings.get("export-clipboard") == "Y") {
         $("#export-clipboard").prop("checked", true);
@@ -89,6 +91,10 @@
       for (var i = 0; i < column_names_array.length; i++) {
         //alert(column_names_array[i] + " : " + column_order_array[i]);
         $("#sort-it ol").append("<li><div class='input-field'><input id='" + column_names_array[i] + "' type='text' col_num=" + column_order_array[i] + "><label for=" + column_names_array[i] + "'>" + column_names_array[i] + "</label></div></li>");
+
+        // add option to "number of columns for row header" dropdown
+        $('#col-count-row-header').append('<option value="'+(i+1)+'" '+
+          (tableau.extensions.settings.get('col-count-row-header') == i+1 ? 'selected' : '')+'>'+(i+1)+'</option>');
       }
       $('#sort-it ol').sortable({
         onDrop: function (item) {
@@ -112,7 +118,7 @@
     $('.tabs').tabs();
     $('#closeButton').click(closeDialog);
     $('#saveButton').click(saveButton);
-    $('#resetButton').click(resetButton);
+    // $('#resetButton').click(resetButton);
   }
 
   function columnsUpdate() {
@@ -221,6 +227,12 @@
     } else {
       tableau.extensions.settings.set("stripe", "N");
     }
+    if ($("#include-table-name").is(":checked")) {
+        tableClass += " include-table-name";
+        tableau.extensions.settings.set("include-table-name", "Y");
+    } else {
+        tableau.extensions.settings.set("include-table-name", "N");
+    }
 
     tableau.extensions.settings.set("table-classes", tableClass);
 
@@ -284,6 +296,9 @@
       }
       counter++;
     });
+
+    // row header setting
+    tableau.extensions.settings.set("col-count-row-header", $('#col-count-row-header').val());
 
     // We save the column order and column name variables in the UI Namespace.
     tableau.extensions.settings.set("column_order", column_order);

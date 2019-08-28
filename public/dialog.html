@@ -82,6 +82,16 @@
                             <p>
                                 Drag and drop the columns to reorder. Click on the middle of the column to change the column name or leave blank to keep the Tableau Data Source Name.
                             </p>
+                            <div role="presentation"><br></div>
+                            <hr>
+                            <label class="mt-lg-2">
+                                <span class="option-header">
+                                    Number of Columns that make the Row Header
+                                </span>
+                                <select id="col-count-row-header">
+                                    <option value="0">None</option>
+                                </select>
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -157,6 +167,20 @@
                                 Check Show Row Striping to instructs DataTables' styling to alternate row colours.
                             </p>
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s6">
+                            <label>
+                                <input type="checkbox" class="filled-in" id="include-table-name" />
+                                <span class="option-header">
+                                    Include Unique Table Name
+                                </span>
+                            </label>
+                            <p class="option-description">
+                                Check Include Unique Table Name to instruct DataTables to include the table name within the programmatic name of all controls. Should be checked if more than one DataTables Extension is being used within a Tableau Dashboard.
+                            </p>
+                        </div>
+                        <div class="col s6"></div>
                     </div>
                 </div>
                 <div id="tab4" class="tab-pane col s12">
