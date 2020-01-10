@@ -18,7 +18,7 @@
     tableau.extensions.initializeAsync({ 'configure': configure }).then(function () {
       // calls a function to show the table. There will be plenty of logic in this one.
       renderDataTable();
-      
+
       // We add our Settings and Parameter listeners here  listener here.
       unregisterSettingsEventListener = tableau.extensions.settings.addEventListener(tableau.TableauEventType.SettingsChanged, (settingsEvent) => {
         renderDataTable();
@@ -41,7 +41,7 @@
   function renderDataTable() {
 
     const worksheets = tableau.extensions.dashboardContent.dashboard.worksheets;
-    
+
     // Unregister Event Listeners for old Worksheet, if exists.
     if (unregisterFilterEventListener != null) {
       unregisterFilterEventListener();
@@ -125,7 +125,7 @@
           tableReference.destroy();
           $("#datatable").text("");
         }
-        
+
         // Read the Settings and get the single string for UI settings.
         var tableClass = tableau.extensions.settings.get("table-classes");
         $("#datatable").attr('class', '')
@@ -444,7 +444,7 @@
   // Creates an empty 2D array. we will use this to match the the data set returned
   // by Tableau and repopulate this with the values we want.
   function makeArray(d1, d2) {
-    var arr = new Array(d1), i, l;
+    var arr = new Array(d2), i, l;
     for(i = 0, l = d2; i < l; i++) {
         arr[i] = new Array(d1);
     }
